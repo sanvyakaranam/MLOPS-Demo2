@@ -7,9 +7,7 @@ steps:
   - -c
   - 'pip install -r requirements.txt'
 
-
-  # This step builds the container image.
-
+# This step builds the container image.
 - name: 'gcr.io/cloud-builders/docker'
   id: Build
   args:
@@ -22,15 +20,12 @@ steps:
   - 'gcr.io/$PROJECT_ID/appcicd:latest'
   - '.'
 
-
 # This step pushes the image to Container Registry
-
 - name: 'gcr.io/cloud-builders/docker'
   id: Push
   args:
   - 'push'
   - 'gcr.io/$PROJECT_ID/appcicd'
-
 
 # Deploy image to Cloud Run Google Cloud 
 - name: 'gcr.io/cloud-builders/gcloud'
