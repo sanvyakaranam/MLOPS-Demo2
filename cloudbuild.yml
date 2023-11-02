@@ -1,0 +1,49 @@
+steps:
+# This step runs the unit tests on the app
+- name: 'python:3.10.11-slim-buster'
+  id: Demo
+  entrypoint: /bin/sh
+  args:
+  - -c
+  - 'pip install -r requirements.txt'
+
+
+  # This step builds the container image.
+
+- name: 'gcr.io/cloud-builders/docker'
+  id: Build
+  args:
+  - 'build'
+  - '-t'
+  - 'gcr.io/$PROJECT_ID/appcicd:latest'
+  - '-t'
+  - 'gcr.io/$PROJECT_ID/appcicd:$COMMIT_SHA'
+  - '--cache-from'
+  - 'gcr.io/$PROJECT_ID/appcicd:latest'
+  - '.'
+
+
+# This step pushes the image to Container Registry
+
+- name: 'gcr.io/cloud-builders/docker'
+  id: Push
+  args:
+  - 'push'
+  - 'gcr.io/$PROJECT_ID/appcicd'
+
+
+# Deploy image to Cloud Run Google Cloud 
+- name: 'gcr.io/cloud-builders/gcloud'
+  args:
+  - 'run'
+  - 'deploy'
+  - 'fastapi-model'
+  - '--image'
+  - 'gcr.io/$PROJECT_ID/appcicd:latest'
+      - '--region'
+      - 'us-central1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+
+  

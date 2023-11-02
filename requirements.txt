@@ -1,0 +1,11 @@
+fastapi == 0.104.0
+uvicorn == 0.23.2
+pytest == 7.4.3
+requests == 2.31.0
+python-dotenv == 1.0.0
+transformers == 4.34.1
+langchain == 0.0.324
+openai == 0.28.1
+torch == 2.1.0
+python-multipart == 0.0.6
+Pillow == 10.1.0
